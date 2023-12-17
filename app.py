@@ -6,14 +6,20 @@ from flask_sqlalchemy import SQLAlchemy
 #Crear el server Flask
 app = Flask(__name__)
 
-#Renderiza Index.html 
+#Renderizar Index.html 
 @app.route("/")
 def index():
     try:
         return render_template('index.html')
     except:
         return jsonify({'trace': traceback.format_exc()})
-    
+
+
+@app.route("/agregar_categoria", method='POST')
+def agregar_categoria():
+    if request.method == "POST":
+        categoria = str(request.form.get('categoria')).lower()
+    return render_template("")
     
 if __name__ == '__main__':
     #Lanzar server

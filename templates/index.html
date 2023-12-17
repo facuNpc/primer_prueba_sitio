@@ -5,12 +5,11 @@
     <link rel = "stylesheet" href = "style.css" type = "text/css" />
 </head>
 <body>
-    <h1>Formulario de Personas</h1>
-    <form method="POST" action="">
-        <input name="nombre" type = "text" placeholder="Nombre" />
-        <input name="apellido" type="text" placeholder="Apellido" />
-        <br/> <br/>
-        <input name="edad" type="text" placeholder="Edad" />
+    <h1>Tablas de gastos ordenadas por categorias</h1>
+    <form method="POST" action="{{url_for('agregar_categoria')}}">
+        <label name="categoria">Que categoria de gastos desea agregar?</label> 
+        <br/><br/>
+        <input name="categoria" type = "text" placeholder="categoria" />
         <br/> <br/>
         <input type="submit" value="Enviar"/>
     </form>
