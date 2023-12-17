@@ -14,12 +14,32 @@ def index():
     except:
         return jsonify({'trace': traceback.format_exc()})
 
-
+#Funcion que recibe la categoria
 @app.route("/agregar_categoria", method='POST')
 def agregar_categoria():
-    if request.method == "POST":
-        categoria = str(request.form.get('categoria')).lower()
-    return render_template("")
+    try:
+        if request.method == "POST":
+            categoria = str(request.form.get('categoria')).lower()
+        return redirect(url_for('template_gasto', categoria=categoria))
+    except:
+        Exception
+
+#Template de productos y gastos
+@app.route("/template_gasto", method="POST")
+def template_gasto(categoria):
+    try:
+        return render_template("formulario_gastos", categoria = categoria)
+    except:
+        pass
+
+#Funcion que recibe los gastos
+@app.route("/agregar_gasto", method="POST")
+def agregar_gasto(categoria):
+    try:
+        if request.method == "POST":
+            pass
+    except:
+        return jsonify({'trace': traceback.format_exc()})
     
 if __name__ == '__main__':
     #Lanzar server
