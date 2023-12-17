@@ -6,6 +6,29 @@ from flask_sqlalchemy import SQLAlchemy
 #Crear el server Flask
 app = Flask(__name__)
 
+# Base de datos
+from flask_sqlalchemy import SQLAlchemy
+
+# Indicar al sistema (app) de donde leer la base de datos
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///gastos.db"
+
+# Asociar controlador de la base de datos con la aplicacion
+db = SQLAlchemy()
+db.init_app(app)
+
+# ------------ Tablas de la DB ----------------- #
+class Gastos(db.Model):
+    __tablename__ = "Gastos"
+    id = db.Column(db.Integer, primary_key=True)
+    fecha = db.Column(db.DateTime)
+    producto = db.Column(db.String)
+    categoria = db.Column(db.String)
+    gasto = db.Column(db.Integer)
+    
+    def __repr__(self):
+        return f"Producto {self.producto} valor: {self.gasto}"
+
+# ------------ Rutas o endpoints ----------------- #
 #Renderizar Index.html 
 @app.route("/")
 def index():
@@ -15,32 +38,52 @@ def index():
         return jsonify({'trace': traceback.format_exc()})
 
 #Funcion que recibe la categoria
-@app.route("/agregar_categoria", method='POST')
+@app.route("/agregar_categoria", methods='POST')
 def agregar_categoria():
     try:
         if request.method == "POST":
             categoria = str(request.form.get('categoria')).lower()
-        return redirect(url_for('template_gasto', categoria=categoria))
+        return redirect(url_for('gastos', categoria=categoria))
     except:
         Exception
 
-#Template de productos y gastos
-@app.route("/template_gasto", method="POST")
-def template_gasto(categoria):
-    try:
-        return render_template("formulario_gastos", categoria = categoria)
-    except:
-        pass
 
 #Funcion que recibe los gastos
-@app.route("/agregar_gasto", method="POST")
-def agregar_gasto(categoria):
-    try:
-        if request.method == "POST":
-            pass
-    except:
-        return jsonify({'trace': traceback.format_exc()})
-    
+@app.route("/gastos", methods=['GET', 'POST'])
+def gastos(categoria):
+    if request.method == 'GET':
+        # Si entré por "GET" es porque acabo de cargar la página
+        try:
+            return render_template("formulario_gastos", categoria = categoria)
+        except:
+            return jsonify({'trace': traceback.format_exc()})
+        
+    if request.method == "POST":
+        try:
+            producto = str(request.form.get('producto')).lower()
+            gasto = str(request.form.get('gasto')).lower()
+            categoria =  categoria
+
+            if(producto is None or gasto is None or gasto.isdigit() is False):
+                # Datos ingresados incorrectos
+                return Response(status=400)
+            
+            # Obtener la fecha y hora actual
+            fecha = datetime.now()
+
+            # Crear un nuevo registro de gastos
+            gastos = Gastos(fecha=fecha, producto=producto, gasto=int(gasto), categoria=categoria)
+
+            # Agregar el registro de gastos a la DB
+            db.session.add(gastos)
+            db.session.commit()
+
+            #Redirigir a template que muestre las tablas
+            return redirect(url_for('pulsaciones'))
+        except:
+            return jsonify({'trace': traceback.format_exc()})
+
+
 if __name__ == '__main__':
     #Lanzar server
     app.run(host="127.0.0.1", port=5000, debug= True)

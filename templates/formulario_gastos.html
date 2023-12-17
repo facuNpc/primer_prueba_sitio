@@ -6,16 +6,18 @@
 </head>
 <body>
     <h1>Agregue los gastos</h1>
-    <form action="{{url_for()}}">
-        <label name="producto">
+    <form method="POST" action="{{url_for(gastos)}}">
+        <label name="producto">Producto
         <br><br>
             <input name="producto" type="text" placeholder="producto" />
         </label>
         <br><br>
-        <label name="gasto">
+        <label name="gasto">Gasto
         <br><br>
             <input name="gasto" type="number" placeholder="gasto" />
         </label>
+        <br><br>
+        <input type="submit" value="Enviar"/>
     </form>
 </body>
 </html>
