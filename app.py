@@ -72,6 +72,13 @@ def gastos(categoria):
             return redirect(url_for('index.html'))
         except:
             return jsonify({'trace': traceback.format_exc()})
+        
+        
+# Crear la base de datos
+with app.app_context():
+
+    db.create_all()
+    print("Base de datos generada")
 
 
 if __name__ == '__main__':
