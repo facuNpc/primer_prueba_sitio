@@ -69,7 +69,7 @@ def gastos(categoria):
             db.session.commit()
 
             #Redirigir a template que muestre las tablas
-            return redirect(url_for('pulsaciones'))
+            return redirect(url_for('index.html'))
         except:
             return jsonify({'trace': traceback.format_exc()})
 

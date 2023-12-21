@@ -12,22 +12,26 @@
         <thead cellpadding="1.0" cellspacing="1.0">
             <tr>
                 <th>Fecha</th>
-                <th>Nombre</th>            
-                <th>Pulsación</th>
-                <th>Histórico</th>
+                <th>categoria</th>            
+                <th>Producto</th>
+                <th>Precio</th>
             </tr>
         </thead>
         <tbody>
             {% for row in data %}
             <tr>
                 <td>{{row['fecha']}}</td>
-                <td>{{row['nombre']}}</td>
-                <td>{{row['pulso']}}</td>
-                <td><a href="{{url_for('pulsaciones_historico', nombre=row['nombre'])}}">Link</a></td>
+                <td>{{row['categoria']}}</td>
+                <td>{{row['producto']}}</td>
+                <td>{{row['gasto']}}</td>
             </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table> <br/><br/>
+
+    <form action="{{url_for('gastos')}}">
+        <input type="submit" value="Agregar" />
+    </form>
 
 
 </body>
