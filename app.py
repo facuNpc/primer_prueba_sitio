@@ -40,7 +40,7 @@ def index():
     
 #Funcion que recibe los gastos
 @app.route("/gastos", methods=['GET', 'POST'])
-def gastos(categoria):
+def gastos():
     if request.method == 'GET':
         # Si entré por "GET" es porque acabo de cargar la página
         try:
@@ -69,11 +69,33 @@ def gastos(categoria):
             db.session.commit()
 
             #Redirigir a template que muestre las tablas
-            return redirect(url_for('index.html'))
+            return redirect(url_for('datos'))
         except:
             return jsonify({'trace': traceback.format_exc()})
-        
-        
+
+
+def datos():
+    try:
+        # Obtener todos los gastos:
+        query = db.session.query(Gastos)     
+
+        # Ordenamos por fecha para obtener primero el ultimo registro
+        query = query.order_by(Gastos.fecha.desc())     
+
+        # Obtener el reporte
+        data = []
+
+        for paciente in query:
+            json_result = {}
+            json_result['fecha'] = paciente.fecha.strftime("%Y-%m-%d %H:%M:%S.%f")
+            json_result['nombre'] = paciente.nombre
+            json_result['pulso'] = paciente.valor
+            data.append(json_result)
+
+        return render_template('index.html', data=data)
+    except:
+        return jsonify({'trace': traceback.format_exc()})
+
 # Crear la base de datos
 with app.app_context():
 
