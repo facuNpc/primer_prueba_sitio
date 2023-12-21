@@ -36,18 +36,8 @@ def index():
         return render_template('index.html')
     except:
         return jsonify({'trace': traceback.format_exc()})
-
-#Funcion que recibe la categoria
-@app.route("/agregar_categoria", methods='POST')
-def agregar_categoria():
-    try:
-        if request.method == "POST":
-            categoria = str(request.form.get('categoria')).lower()
-        return redirect(url_for('gastos', categoria=categoria))
-    except:
-        Exception
-
-
+    
+    
 #Funcion que recibe los gastos
 @app.route("/gastos", methods=['GET', 'POST'])
 def gastos(categoria):
@@ -62,7 +52,7 @@ def gastos(categoria):
         try:
             producto = str(request.form.get('producto')).lower()
             gasto = str(request.form.get('gasto')).lower()
-            categoria =  categoria
+            categoria = str(request.form.get('categoria')).lower()
 
             if(producto is None or gasto is None or gasto.isdigit() is False):
                 # Datos ingresados incorrectos
