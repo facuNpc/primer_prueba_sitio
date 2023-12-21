@@ -8,7 +8,27 @@
 <body>
     <h1>Tablas de gastos ordenadas por categorias</h1>
 
-    </form>
-    
+    <table border="1">
+        <thead cellpadding="1.0" cellspacing="1.0">
+            <tr>
+                <th>Fecha</th>
+                <th>Nombre</th>            
+                <th>Pulsación</th>
+                <th>Histórico</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{row['fecha']}}</td>
+                <td>{{row['nombre']}}</td>
+                <td>{{row['pulso']}}</td>
+                <td><a href="{{url_for('pulsaciones_historico', nombre=row['nombre'])}}">Link</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
 </body>
 </html>
