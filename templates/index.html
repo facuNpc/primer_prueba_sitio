@@ -6,22 +6,24 @@
     <link rel = "stylesheet" href = "style.css" type = "text/css" />
 </head>
 <body>
-    <h1>Tablas de gastos ordenadas por categorias</h1>
+    <h1>Tabla de gastos</h1>
 
     <table border="1">
         <thead cellpadding="1.0" cellspacing="1.0">
+            <tr>    
+                <th></th>
+                <th style="width: 300px;">categoria</th>
+            </tr>
             <tr>
-                <th>Fecha</th>
-                <th>categoria</th>            
-                <th>Producto</th>
-                <th>Precio</th>
+                <th style="width: 300px;">Fecha</th>       
+                <th style="width: 300px;">Producto</th>
+                <th style="width: 300px;">Precio</th>
             </tr>
         </thead>
         <tbody>
             {% for row in data %}
             <tr>
                 <td>{{row['fecha']}}</td>
-                <td>{{row['categoria']}}</td>
                 <td>{{row['producto']}}</td>
                 <td>{{row['gasto']}}</td>
             </tr>

@@ -38,16 +38,16 @@ def index():
         return jsonify({'trace': traceback.format_exc()})
     
     
-#Funcion que recibe los gastos
+#Recibir los datos del usuario
 @app.route("/gastos", methods=['GET', 'POST'])
 def gastos():
+    #Cliente carga la página
     if request.method == 'GET':
-        # Si entré por "GET" es porque acabo de cargar la página
         try:
-            return render_template("formulario_gastos", categoria = categoria)
+            return render_template("formulario_gastos.html")
         except:
             return jsonify({'trace': traceback.format_exc()})
-        
+    #Obtener información ingresada del cliente 
     if request.method == "POST":
         try:
             producto = str(request.form.get('producto')).lower()
@@ -74,6 +74,7 @@ def gastos():
             return jsonify({'trace': traceback.format_exc()})
 
 
+@app.route("/datos", methods=['GET'])
 def datos():
     try:
         # Obtener todos los gastos:
@@ -85,16 +86,18 @@ def datos():
         # Obtener el reporte
         data = []
 
-        for paciente in query:
+        for datos in query:
             json_result = {}
-            json_result['fecha'] = paciente.fecha.strftime("%Y-%m-%d %H:%M:%S.%f")
-            json_result['nombre'] = paciente.nombre
-            json_result['pulso'] = paciente.valor
+            json_result['fecha'] = datos.fecha.strftime("%Y-%m-%d %H:%M")
+            json_result['categoria'] = datos.categoria
+            json_result['producto'] = datos.producto
+            json_result['gasto'] = datos.gasto
             data.append(json_result)
 
         return render_template('index.html', data=data)
     except:
         return jsonify({'trace': traceback.format_exc()})
+
 
 # Crear la base de datos
 with app.app_context():
