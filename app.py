@@ -74,7 +74,7 @@ def gastos():
             return jsonify({'trace': traceback.format_exc()})
 
 
-@app.route("/datos", methods=['GET'])
+@app.route("/datos")
 def datos():
     try:
         # Obtener todos los gastos:
